@@ -1,0 +1,23 @@
+from flask import Flask, jsonify, request
+from web3 import Web3
+
+app = Flask(__name__)
+w3 = Web3(Web3.HTTPProvider("https://mainnet.infura.io/v3/8365b38a49eb4cb899edfe72b3ddc252"))
+
+@app.route('/block/<block_number>', methods=['GET'])
+def get_block(block_number):
+    block = w3.eth.get_block(block_number)
+    return jsonify(block)
+
+@app.route('/block/hash/<block_hash>', methods=['GET'])
+def get_block_by_hash(block_hash):
+    block = w3.eth.get_block(block_hash)
+    return jsonify(block)
+
+@app.route('/tx/<tx_hash>', methods=['GET'])
+def get_transaction(tx_hash):
+    tx = w3.eth.get_transaction(tx_hash)
+    return jsonify(tx)
+
+if __name__ == '__main__':
+    app.run()
